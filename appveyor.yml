@@ -1,0 +1,52 @@
+version: 1.0.{build}
+branches:
+  only:
+  - /^cygwin-.*$/
+environment:
+  ID_RSA_DECRYPT_SECRET:
+    secure: Ef3nfamcDgJ7Nl75SXRfH6cf9c/8ulqqJMUlfMQNOZk=
+  appveyor_rdp_password:
+    secure: 7xOAIdcaLhq8wnf698xPwA==
+  matrix:
+  - PLATFORM: _64
+    PLATFORM2: 64
+    URL: 'fejf1354d77gvw5y/artifacts/dokan-fuse-1.1.0-1.x86_64'
+  - URL: 'hw5qs2obg438ufa5/artifacts/dokan-fuse-1.1.0-1.i686'
+install:
+- cmd: >-
+    appveyor DownloadFile https://cygwin.com/setup-x86%PLATFORM%.exe
+    
+    choco install -y wget
+    
+    wget https://ci.appveyor.com/api/buildjobs/%URL%/dist/dokan-fuse/dokan-fuse-1.1.0-1-src.tar.xz -P mirror\x86%PLATFORM%\release\dokan-fuse
+    
+    wget https://ci.appveyor.com/api/buildjobs/%URL%/dist/dokan-fuse/dokan-fuse-1.1.0-1.hint -P mirror\x86%PLATFORM%\release\dokan-fuse
+    
+    wget https://ci.appveyor.com/api/buildjobs/%URL%/dist/dokan-fuse/dokan-fuse-1.1.0-1.tar.xz -P mirror\x86%PLATFORM%\release\dokan-fuse
+
+    set CHERE_INVOKING=enabled_from_arguments
+
+    setup-x86%PLATFORM%.exe -q -P cygport,calm
+    
+    C:\cygwin%PLATFORM2%\bin\bash --login -c "cd mirror && mksetupini --arch x86%PLATFORM% --inifile=x86%PLATFORM%/setup.ini --releasearea=. --disable-check=missing-required-package"
+    
+    setup-x86%PLATFORM%.exe -q -L -l %APPVEYOR_BUILD_FOLDER%\mirror -P dokan-fuse
+
+    C:\cygwin%PLATFORM2%\bin\bash --login -c ". *.cygport && if [[ -n ""${SRC_URI}"" ]]; then wget ${SRC_URI}; fi"
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- cmd: C:\cygwin%PLATFORM2%\bin\bash --login -c "cygport *.cygport all"
+artifacts:
+- path: '*\dist\*\*'
+deploy_script:
+- ps: >-
+    if ($env:APPVEYOR_REPO_COMMIT_MESSAGE -match '^\[ci push\] ') {
+
+    iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+
+    & "C:\cygwin$env:PLATFORM2\bin\bash" --login -c 'mkdir -p ~/.ssh && ./appveyor-tools/secure-file.exe -decrypt id_rsa.enc -secret $ID_RSA_DECRYPT_SECRET -out $(cygpath -w ~/.ssh/id_rsa) && ssh-keyscan -H cygwin.com >> ~/.ssh/known_hosts && chmod go-rwx ~/.ssh/id_rsa'
+
+    & "C:\cygwin$env:PLATFORM2\bin\bash" --login -c 'SSH_KEY=~/.ssh/id_rsa cygport *.cygport up'
+
+    }
