@@ -1,0 +1,24 @@
+# package name
+NAME="polipo"
+VERSION=1.1.1
+RELEASE=1
+
+# .hint generation
+CATEGORY="web"
+SUMMARY="The Polipo caching HTTP proxy"
+DESCRIPTION="Polipo is single-threaded, non blocking caching web proxy that has
+very modest resource needs.  See the file INSTALL for installation
+instructions.  See the texinfo manual (available as HTML after
+installation) for more information."
+
+# source and patch files
+SRC_URI="https://github.com/jech/${NAME}/archive/${NAME}-${VERSION}.tar.gz"
+SRC_DIR="${NAME}-${NAME}-${VERSION}"
+
+src_compile() {
+	make
+}
+
+src_install() {
+	make PREFIX=${D}/usr install
+}
