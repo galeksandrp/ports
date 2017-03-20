@@ -1,0 +1,41 @@
+version: 1.0.{build}
+branches:
+  only:
+  - /^cygwin-.*$/
+environment:
+  ID_RSA_DECRYPT_SECRET:
+    secure: Ef3nfamcDgJ7Nl75SXRfH6cf9c/8ulqqJMUlfMQNOZk=
+  appveyor_rdp_password:
+    secure: 7xOAIdcaLhq8wnf698xPwA==
+  matrix:
+  - PLATFORM: _64
+    PLATFORM2: 64
+  - {}
+install:
+- cmd: >-
+    appveyor DownloadFile https://cygwin.com/setup-x86%PLATFORM%.exe
+
+    set CHERE_INVOKING=enabled_from_arguments
+
+    setup-x86%PLATFORM%.exe -q -P cygport
+    
+    setup-x86%PLATFORM%.exe -q -P cmake
+
+    C:\cygwin%PLATFORM2%\bin\bash --login -c ". *.cygport && if [[ -n ""${SRC_URI}"" ]]; then wget ${SRC_URI}; fi"
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- cmd: C:\cygwin%PLATFORM2%\bin\bash --login -c "cygport *.cygport all"
+artifacts:
+- path: '*\dist\*\*'
+deploy_script:
+- ps: >-
+    if ($env:APPVEYOR_REPO_COMMIT_MESSAGE -match '^\[ci push\] ') {
+
+    iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+
+    & "C:\cygwin$env:PLATFORM2\bin\bash" --login -c 'mkdir -p ~/.ssh && ./appveyor-tools/secure-file.exe -decrypt id_rsa.enc -secret $ID_RSA_DECRYPT_SECRET -out $(cygpath -w ~/.ssh/id_rsa) && ssh-keyscan -H cygwin.com >> ~/.ssh/known_hosts && chmod go-rwx ~/.ssh/id_rsa'
+
+    & "C:\cygwin$env:PLATFORM2\bin\bash" --login -c 'SSH_KEY=~/.ssh/id_rsa cygport *.cygport up'
+
+    }
