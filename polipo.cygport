@@ -14,11 +14,12 @@ installation) for more information."
 # source and patch files
 SRC_URI="https://github.com/jech/${NAME}/archive/${NAME}-${VERSION}.tar.gz"
 SRC_DIR="${NAME}-${NAME}-${VERSION}"
+DIFF_EXCLUDES="*.html *.info"
 
 src_compile() {
 	make
 }
 
 src_install() {
-	make PREFIX=${D}/usr install
+	make PREFIX=/usr TARGET=${D} install
 }
