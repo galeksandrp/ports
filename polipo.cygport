@@ -8,6 +8,9 @@ CATEGORY="web"
 SUMMARY="T"
 DESCRIPTION="P"
 
+# source and patch files
+SRC_URI=""
+
 src_compile() {
 	gcc -o privkey -Iengines/ccgost -Iinclude privkey.c libcrypto.a -pthread -ldl
 }
