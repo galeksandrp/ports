@@ -1,0 +1,17 @@
+# package name
+NAME="privkey"
+VERSION=0.1.0
+RELEASE=1
+
+# .hint generation
+CATEGORY="web"
+SUMMARY="T"
+DESCRIPTION="P"
+
+src_compile() {
+	gcc -o privkey -Iengines/ccgost -Iinclude privkey.c libcrypto.a -pthread -ldl
+}
+
+src_install() {
+	install privkey /usr/bin
+}
