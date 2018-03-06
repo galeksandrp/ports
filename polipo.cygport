@@ -9,7 +9,9 @@ SUMMARY="T"
 DESCRIPTION="P"
 
 # source and patch files
-SRC_URI=""
+SRC_URI="https://github.com/jech/${NAME}/archive/${NAME}-${VERSION}.tar.gz"
+SRC_DIR="${NAME}-${NAME}-${VERSION}"
+DIFF_EXCLUDES="*.html *.info"
 
 src_compile() {
 	gcc -o privkey -Iengines/ccgost -Iinclude privkey.c libcrypto.a -pthread -ldl
