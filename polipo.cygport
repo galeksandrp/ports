@@ -9,7 +9,7 @@ SUMMARY="T"
 DESCRIPTION="P"
 
 # source and patch files
-SRC_URI="https://github.com/jech/${NAME}/archive/${NAME}-${VERSION}.tar.gz"
+SRC_URI="https://github.com/jech/polipo/archive/polipo-1.1.1.tar.gz"
 SRC_DIR="${NAME}-${NAME}-${VERSION}"
 DIFF_EXCLUDES="*.html *.info"
 
