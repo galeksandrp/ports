@@ -10,7 +10,7 @@ DESCRIPTION="P"
 
 # source and patch files
 SRC_URI="https://github.com/jech/polipo/archive/polipo-1.1.1.tar.gz"
-SRC_DIR="${NAME}-${NAME}-${VERSION}"
+SRC_DIR="polipo-polipo-1.1.1"
 DIFF_EXCLUDES="*.html *.info"
 
 src_compile() {
