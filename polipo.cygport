@@ -1,6 +1,6 @@
 # package name
 NAME="polipo"
-VERSION=1.1.1
+VERSION=1.1.0
 RELEASE=1
 
 # .hint generation
