@@ -1,4 +1,5 @@
-# Maintainer: Alexandre Demers <alexandre.f.demers@gmail.com>
+# Maintainer: Alexander Georgievskiy <galeksandrp@gmail.com>
+# Contributor: Alexandre Demers <alexandre.f.demers@gmail.com>
 # Contributor: Johannes Dewender  arch at JonnyJD dot net
 # Contributor: Ionut Biru <ibiru@archlinux.org>
 # Contributor: Tom Newsom <Jeepster@gmx.co.uk>
@@ -9,7 +10,7 @@ pkgname=lib32-$_pkgbasename
 pkgver=3.4.2
 pkgrel=2
 epoch=1
-pkgdesc="Complete solution to record, convert and stream audio and video (32 bit)"
+pkgdesc="libFFMPEG. Fixes Remote Play memory leak at least on AMD GPU. Delete libav*.so* in Steam runtime before using."
 arch=('x86_64')
 url="http://ffmpeg.org/"
 license=('GPL3')
