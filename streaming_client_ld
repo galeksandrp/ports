@@ -1,0 +1,2 @@
+#!/bin/sh
+LD_PRELOAD='/usr/lib32/libavcodec.so.57 /usr/lib32/libavformat.so.57 /usr/lib32/libavresample.so.3 /usr/lib32/libavutil.so.55' ~/.local/share/Steam/ubuntu12_32/streaming_client_orig "$@"
