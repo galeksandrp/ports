@@ -1,6 +1,7 @@
-# Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+# Maintainer: Alexander Georgievskiy <galeksandrp@gmail.com>
+# Contributor: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
 
-pkgbase=linux
+pkgbase=linux-flowoffload
 pkgver=5.11.15.arch1
 pkgrel=2
 pkgdesc='Linux'
@@ -18,6 +19,7 @@ _srcname=archlinux-linux
 source=(
   "$_srcname::git+https://git.archlinux.org/linux.git?signed#tag=$_srctag"
   config         # the main kernel config file
+  650-netfilter-add-xt_FLOWOFFLOAD-target.patch
 )
 validpgpkeys=(
   'ABAF11C65A2970B130ABE3C479BE3E4300411886'  # Linus Torvalds
@@ -25,7 +27,8 @@ validpgpkeys=(
   'A2FF3A36AAA56654109064AB19802F8B0D70FC30'  # Jan Alexander Steffens (heftig)
 )
 sha256sums=('SKIP'
-            'eb0994b0a8f270b39ac660d274fe19bf1bc120cac88fe12d3f07497df1662918')
+            'eb0994b0a8f270b39ac660d274fe19bf1bc120cac88fe12d3f07497df1662918'
+            'bf8f667824e96177d4deb245f9e2df1643c9df3fa884df3e0f459bbf83f68ad0')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
