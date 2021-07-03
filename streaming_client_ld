@@ -1,2 +1,11 @@
-#!/bin/sh
-LD_PRELOAD='/usr/lib32/libavcodec.so.57 /usr/lib32/libavformat.so.57 /usr/lib32/libavresample.so.3 /usr/lib32/libavutil.so.55' ~/.local/share/Steam/ubuntu12_32/streaming_client_orig "$@"
+#!/usr/bin/env sh
+# First class environment variables
+STREAMING_CLIENT_LIBRARIES_PATH="$HOME/.local/share/Steam/ubuntu12_32"
+DISTRO_LIBRARIES_PATH='/usr/lib32'
+
+# Secondary class environment variables (derived from first class environment variables)
+LD_PRELOAD_LIBRARIES="$(cd "$STREAMING_CLIENT_LIBRARIES_PATH" && ls -1 libav*.so.* | xargs whereis -B "$DISTRO_LIBRARIES_PATH" -f | xargs ls | tr '\n' ' ')"
+
+echo LD_PRELOAD="$LD_PRELOAD_LIBRARIES" "$STREAMING_CLIENT_LIBRARIES_PATH/streaming_client_orig" "$@"
+
+LD_PRELOAD="$LD_PRELOAD_LIBRARIES" "$STREAMING_CLIENT_LIBRARIES_PATH/streaming_client_orig" "$@"
